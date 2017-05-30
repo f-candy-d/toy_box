@@ -23,6 +23,8 @@ public:
 	void shrink(capacity_t request_size);
 	capacity_t capacity() const;
 	capacity_t count() const;
+	bool empty() const;
+	bool full() const;
 	// modifiers
 	void push_back(const T& value);
 	void push_back(T&& value);
@@ -46,11 +48,16 @@ private:
 	capacity_t count_;
 	index_t front_;
 	index_t back_;
+	index_t dummy_;
 
 	void free_memory();
+	void init(capacity_t request_size);
 	capacity_t confirm_capacity(capacity_t request_size);
 };
 
 } /* toy_box */
+
+// include the implementation file
+#include "impl.h"
 
 #endif
