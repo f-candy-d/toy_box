@@ -62,6 +62,8 @@ int main(int argc, char const *argv[])
 	std::cout << "front -> " << buff.front() << '\n';
 	std::cout << "back -> " << buff.back() << '\n';
 
+	buff.shrink(0);
+	log_buff(buff);
 
 	return 0;
 }

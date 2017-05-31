@@ -95,6 +95,7 @@ void ring_buffer<T>::expand(capacity_t request_size)
 		data_ = data;
 
 		capacity_ = capacity;
+		dummy_ = capacity;
 		front_ = (count_ == 0) ? dummy_ : 0;
 		back_ = (count_ == 0) ? dummy_ : count_ - 1;
 	}
@@ -107,22 +108,24 @@ void ring_buffer<T>::shrink(capacity_t request_size)
 	if(capacity == 0)
 	{
 		free_memory();
-		count_ = capacity_ = 0;
+		//even though the capacity is 0, but the dummy memory space is allocated
+		data_ = alc_.allocate(ring_buffer_bits::kDummyMemmorySize);
+		count_ = capacity_ = dummy_ = 0;
 		front_ = back_ = dummy_;
 	}
 	else if(capacity < capacity_)
 	{
 		count_ = (count_ < capacity) ? count_ : capacity;
-
-		T* data = alc_.allocate(capacity);
+		T* data = alc_.allocate(capacity + ring_buffer_bits::kDummyMemmorySize);
 		// TODO -> enable this code after implementation of iterators
 		// std::uninitialized_copy_n(begin(), count_, data);
-		free_memory();
 
-		// capacity_ = capacity;
-		// front_ = 0;
-		// back_ = count_ - 1;
-		// data_ = data;
+		free_memory();
+		data_ = data;
+		capacity_ = capacity;
+		dummy_ = capacity;
+		front_ = (count_ == 0) ? dummy_ : 0;
+		back_ = (count_ == 0) ? dummy_ : count_ - 1;
 	}
 }
 
@@ -329,13 +332,16 @@ const T& ring_buffer<T>::back() const
 template <typename T>
 void ring_buffer<T>::free_memory()
 {
-	for(index_t i = 0; i < count_; ++i)
+	if(data_ != nullptr)
 	{
-		alc_.destroy(&(*this)[i]);
-	}
+		for(index_t i = 0; i < count_; ++i)
+		{
+			alc_.destroy(&(*this)[i]);
+		}
 
-	alc_.deallocate(data_, capacity_ + ring_buffer_bits::kDummyMemmorySize);
-	data_ = nullptr;
+		alc_.deallocate(data_, capacity_ + ring_buffer_bits::kDummyMemmorySize);
+		data_ = nullptr;
+	}
 }
 
 template <typename T>
@@ -349,9 +355,8 @@ void ring_buffer<T>::init(capacity_t request_size)
 		capacity_ = capacity;
 		count_ = 0;
 		// by default (count = 0), 'front' and 'back' have the same index as 'dummy'
-		front_ = capacity_;
-		back_ = capacity_;
 		dummy_ = capacity_;
+		front_ = back_ = dummy_;
 	}
 }
 
