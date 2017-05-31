@@ -3,13 +3,19 @@
 
 #include <cstdlib>
 #include <memory>
+#include "constants.h"
+#include "iterators.h"
 
 namespace toy_box {
 
 template <typename T> class ring_buffer
 {
-	using index_t = size_t;
-	using capacity_t = size_t;
+	using index_t = ring_buffer_bits::index_t;
+	using capacity_t = ring_buffer_bits::capacity_t;
+	using iterator = ring_buffer_bits::iterator<T>;
+	using const_iterator = ring_buffer_bits::const_iterator<T>;
+	using physical_memory_iterator = ring_buffer_bits::physical_memory_iterator<T>;
+	using const_physical_memory_iterator = ring_buffer_bits::const_physical_memory_iterator<T>;
 
 public:
 	ring_buffer();
@@ -33,6 +39,7 @@ public:
 	void pop_back();
 	void pop_front();
 	void clear();
+	void clean_up();
 	// element access
 	T& operator[](index_t index);
 	const T& operator[](index_t index) const;
@@ -40,6 +47,19 @@ public:
 	const T& front() const;
 	T& back();
 	const T& back() const;
+	// iterators
+	iterator begin() { return (count_ == 0) ? end() : iterator(this, 0); }
+	const_iterator begin() const { return (count_ == 0) ? end() : const_iterator(this, 0); }
+	const_iterator cbegin() const { return (count_ == 0) ? cend() : const_iterator(this, 0); }
+	iterator end() { return iterator(this, count_); }
+	const_iterator end() const { return const_iterator(this, count_); }
+	const_iterator cend() const { return const_iterator(this, count_); }
+	physical_memory_iterator pmbegin() { return physical_memory_iterator(data_); }
+	const_physical_memory_iterator pmbegin() const { return const_physical_memory_iterator(data_); }
+	const_physical_memory_iterator cpmbegin() const { return const_physical_memory_iterator(data_); }
+	physical_memory_iterator pmend() { return physical_memory_iterator(data_ + capacity_); }
+	const_physical_memory_iterator pmend() const { return physical_memory_iterator(data_ + capacity_); }
+	const_physical_memory_iterator cpmend() const { return physical_memory_iterator(data_ + capacity_); }
 
 private:
 	std::allocator<T> alc_;
@@ -48,7 +68,6 @@ private:
 	capacity_t count_;
 	index_t front_;
 	index_t back_;
-	index_t dummy_;
 
 	void free_memory();
 	void init(capacity_t request_size);

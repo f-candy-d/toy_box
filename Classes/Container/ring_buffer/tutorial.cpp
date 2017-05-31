@@ -8,17 +8,20 @@ void log_buff(const toy_box::ring_buffer<int>& buff)
 	std::cout << "--------------------------------" << '\n';
 	std::cout << "capacity -> " << buff.capacity() << '\n';
 	std::cout << "count -> " << buff.count() << '\n';
-	std::cout << "index -> ";
+	std::cout << "          index  -> ";
 	for(size_t i = 0; i < buff.capacity(); ++i)
 	{
 			std::cout << std::setfill('_') << std::setw(3) << i << "|";
 	}
-	std::cout << "\ndata  -> ";
-	// for(auto itr = buff.begin(); itr != buff.end(); ++itr)
-	for(size_t i = 0; i < buff.count(); ++i)
+	std::cout << "\nvirtual memory   -> ";
+	for(auto itr = buff.begin(); itr != buff.end(); ++itr)
 	{
-		// std::cout << std::setfill('_') << std::setw(3) << *itr << "|";
-		std::cout << std::setfill('_') << std::setw(3) << buff[i] << "|";
+		std::cout << std::setfill('_') << std::setw(3) << *itr << "|";
+	}
+	std::cout << "\nphysical memory  -> ";
+	for(auto itr = buff.pmbegin(); itr != buff.pmend(); ++itr)
+	{
+		std::cout << std::setfill('_') << std::setw(3) << *itr << "|";
 	}
 	std::cout << "\n--------------------------------" << '\n';
 }
@@ -63,6 +66,9 @@ int main(int argc, char const *argv[])
 	std::cout << "back -> " << buff.back() << '\n';
 
 	buff.shrink(0);
+	log_buff(buff);
+
+	buff.expand(50);
 	log_buff(buff);
 
 	return 0;
