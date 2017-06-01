@@ -1,3 +1,5 @@
+<br />
+
 **class template**
 # toy_box::ring_buffer
 
@@ -198,4 +200,15 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 			std::cout << "data -> " << buffer[i] << '\n';
 		}
 
-詳しくは`tutorial.cpp`を **CHECK !!**
+詳しくは`tutorial.cpp`を **CHECK !!**  
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
