@@ -1,0 +1,414 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<style>
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, "Hiragino Sans GB", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    color: #737373;
+    background-color: white;
+    margin: 10px 13px 10px 13px;
+}
+table {
+	margin: 10px 0 15px 0;
+	border-collapse: collapse;
+}
+td,th {	
+	border: 1px solid #ddd;
+	padding: 3px 10px;
+}
+th {
+	padding: 5px 10px;	
+}
+
+a {
+    color: #0069d6;
+}
+a:hover {
+    color: #0050a3;
+    text-decoration: none;
+}
+a img {
+    border: none;
+}
+p {
+    margin-bottom: 9px;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #404040;
+    line-height: 36px;
+}
+h1 {
+    margin-bottom: 18px;
+    font-size: 30px;
+}
+h2 {
+    font-size: 24px;
+}
+h3 {
+    font-size: 18px;
+}
+h4 {
+    font-size: 16px;
+}
+h5 {
+    font-size: 14px;
+}
+h6 {
+    font-size: 13px;
+}
+hr {
+    margin: 0 0 19px;
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+blockquote {
+    padding: 13px 13px 21px 15px;
+    margin-bottom: 18px;
+    font-family:georgia,serif;
+    font-style: italic;
+}
+blockquote:before {
+    content:"\201C";
+    font-size:40px;
+    margin-left:-10px;
+    font-family:georgia,serif;
+    color:#eee;
+}
+blockquote p {
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 18px;
+    margin-bottom: 0;
+    font-style: italic;
+}
+code, pre {
+    font-family: Monaco, Andale Mono, Courier New, monospace;
+}
+code {
+    background-color: #fee9cc;
+    color: rgba(0, 0, 0, 0.75);
+    padding: 1px 3px;
+    font-size: 12px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+}
+pre {
+    display: block;
+    padding: 14px;
+    margin: 0 0 18px;
+    line-height: 16px;
+    font-size: 11px;
+    border: 1px solid #d9d9d9;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+pre code {
+    background-color: #fff;
+    color:#737373;
+    font-size: 11px;
+    padding: 0;
+}
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:10px auto;
+    }
+}
+@media print {
+	body,code,pre code,h1,h2,h3,h4,h5,h6 {
+		color: black;
+	}
+	table, pre {
+		page-break-inside: avoid;
+	}
+}
+</style>
+<title>toy_box::ring_buffer</title>
+
+</head>
+<body>
+<p><br /></p>
+
+<p><strong>class template</strong></p>
+
+<h1>toy_box::ring_buffer</h1>
+
+<div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;https://raw.githubusercontent.com/f-candy-d/diagrams_for_md/master/dlib/dlib_ring_buffer_fig_1.xml&quot;,&quot;url&quot;:&quot;https://raw.githubusercontent.com/f-candy-d/diagrams_for_md/master/dlib/dlib_ring_buffer_fig_1.xml&quot;}"></div>
+
+
+<script type="text/javascript" src="https://www.draw.io/embed2.js?s=basic&fetch=https%3A%2F%2Fraw.githubusercontent.com%2Ff-candy-d%2Fdiagrams_for_md%2Fmaster%2Fdlib%2Fdlib_ring_buffer_fig_1.xml"></script>
+
+
+<h2>Overview</h2>
+
+<p>リングバッファクラス。リングバッファ？なときは<a href="https://ja.wikipedia.org/wiki/%E3%83%AA%E3%83%B3%E3%82%B0%E3%83%90%E3%83%83%E3%83%95%E3%82%A1">コチラ</a>。back -> front の向きは時計回り。<br/>
+<code>push_front()/back()</code>、<code>pop_front()/back()</code>がO(1)で可能。ランダムアクセスもOk。要素数（<code>count()</code>)が最大容量(<code>capacity()</code>)を超えると、front/backの要素から順に書き換わる。今のところinsert系のメソッドは無し。<br/>
+indexの正規化をビット演算で行うために最大容量は必ず2の冪乗になる。</p>
+
+<h3>File Organization</h3>
+
+<pre><code>    toy_box/
+        |
+        Classes/
+            |
+            Container/
+                |
+                ring_buffer/
+                    |
+                    + ring_buffer.h
+                    + impl.h
+                    + iterators.h
+                    + misc.h
+                    - tutorial.cpp
+</code></pre>
+
+<p>宣言ファイル、実装ファイル、イテレータの宣言＆実装ファイル、全体で使用するパラメータの定義ファイルに分かれている。</p>
+
+<h3>Namespace</h3>
+
+<pre><code>    namespace toy_box
+    {
+        template &lt;typename T&gt; class ring_buffer;
+
+        namespace ring_buffer_bits
+        {
+            using capacity_t = size_t;
+            using index_t = size_t;
+
+            static const size_t kCapacityBase = 2;
+
+            template &lt;typename T&gt; struct iterator;
+            template &lt;typename T&gt; struct const_iterator;
+            template &lt;typename T&gt; struct physical_memory_iterator;
+            template &lt;typename T&gt; struct const_physical_memory_iterator;
+        }
+    }
+</code></pre>
+
+<p>名前空間 <strong>ring_buffer_bits</strong> には ring_buffer クラスの構成部品が入っている。各種イテレータは ring_buffer クラスでエイリアスが作成されているので、そちらから利用すること(<code>toy_box::ring_buffer&lt;T&gt;::iterator</code>とか)。<br/>
+<strong>(const-)iterator</strong> はコンテナの要素 (back -> front) を走査する。対して <strong>(const-)physical-memory-iterator</strong> は確保されている実メモリ上のデータを走査する。</p>
+
+<h3>Public Methods</h3>
+
+<ul>
+<li><code>ring_buffer()</code></li>
+<li><code>ring_buffer(capacity_t request_size)</code></li>
+<li><p><code>ring_buffer(const ring_buffer&amp; other)</code></p>
+
+<p>  コンストラクタs。<strong>request_size</strong>には最大容量を指定するが、希望通りになるかは分からない。<strong>request_size &lt;= 2^n</strong> を満たす最小の2^nが最大容量になる。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>void resize(capacity_t request_size)</code></li>
+<li><code>void expand(capacity_t request_size)</code></li>
+<li><p><code>void shrink(capacity_t request_size)</code></p>
+
+<p>  最大容量を変更する。要素の並びは変わらない。<strong>resize</strong>は内部で<strong>expand</strong>か<strong>shrink</strong>を呼び出している。<strong>shrink</strong>は、新しい最大容量が要素数よりも小さい場合、入りきらない要素をbackの方から削っていく。<br/>
+  また、要素の入っていない部分はみ初期化なので、そこにアクセスした時の動作は未定義。<br/>
+  <strong>request_size</strong>には新しい最大容量の希望の値を渡す。実際には、<strong>request_size &lt;= 2^n</strong> を満たす最小の2^nが最大容量になる。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>void push_back(const T&amp; value)</code></li>
+<li><code>void push_back(T&amp;&amp; value)</code></li>
+<li><code>void push_front(const T&amp; value)</code></li>
+<li><p><code>void push_front(T&amp;&amp; value)</code></p>
+
+<p>  front/backに要素を追加する。右辺値を渡した場合は<code>std::move()</code>で要素の追加が行われる。<strong>capacity</strong>が0の場合、assert:エラーが発生する。
+  要素数が溢れた時は、例えば<strong>push_back</strong>の場合、frontの要素が書き換わり、frontの直前だった要素がfrontになる。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>void pop_back()</code></li>
+<li><p><code>void pop_front()</code></p>
+
+<p>  front/backの要素を削除する。メモリは解放されない。<strong>count</strong> が0でもエラーにはならないよ。<br/>
+  あと、削除した要素のデストラクタが呼ばれる。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>T&amp; operator[](index_t index)</code></li>
+<li><p><code>const T&amp; operator[](index_t index) const</code></p>
+
+<p>  要素にアクセスする基本の手段。<strong>operator[0]</strong>は常に<strong>front</strong>と同じ要素を指す。つまり、<strong>index</strong>には、frontを0として考えた時のインデックスを渡す。また、リングバッファなので、<strong>out-of-range</strong> みたいなことは起こらず、たとえ最大容量を超えたインデックスを渡したとしても正規化される(一周しても戻ってくる)。front &lt;-> back 間の要素以外にもアクセスできるが、未初期化部分なのでどうなるかは知らない。<br/>
+  添字演算子で値を追加/削除しても<strong>count</strong>や<strong>front</strong>、<strong>back</strong>等に反映されないので、<strong>危険</strong>です。やめてください。。。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>T front() const</code></li>
+<li><p><code>T back() const</code></p>
+
+<p>  front/backの値をそれぞれ返却する。<strong>capacity</strong>が0の場合、segumentation-fault が発生。<strong>count</strong>が0の場合、返り値は未定義。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>void clear()</code></li>
+<li><p><code>void clean_up()</code></p>
+
+<p>  要素を全て削除する。<br/>
+  <strong>clear</strong> は各要素のデストラクタを呼ぶが、メモリの開放はしない。<br/>
+  <strong>clean_up</strong> は各要素ののデストラクタを呼び、メモリも開放する。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><p><code>capacity_t capacity() const</code></p>
+
+<p>  最大容量を返す。必ず0か2^n。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><p><code>capacity_t count() const</code></p>
+
+<p>  要素数を返す。当たり前だけど、常に <strong>count &lt;= capacity</strong> 。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>bool empty() const</code></li>
+<li><p><code>bool full() const</code></p>
+
+<p>  コンテナの状態を返す。<br/>
+  <strong>empty</strong> は <strong>count</strong> が0の時 <strong>true</strong> 、そうでなければ <strong>false</strong> を返す。<br/>
+  <strong>full</strong> は <strong>capacity</strong> と <strong>count</strong> が等しい時 <strong>true</strong> 、そうでなければ <strong>false</strong> を返す。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>iterator begin()</code></li>
+<li><code>const_iterator begin() const</code></li>
+<li><code>const_iterator cbegin() const</code></li>
+<li><code>iterator end()</code></li>
+<li><code>const_iterator end() const</code></li>
+<li><p><code>const_iterator cend() const</code></p>
+
+<p>  イテレータの取得メソッドs。<strong>begin</strong>はfrontを指し、<strong>end</strong>はbackの次を指す。イテレータは、forward iterator なので前進のみ可能。</p></li>
+</ul>
+
+
+<hr />
+
+<ul>
+<li><code>physical_memory_iterator pmbegin()</code></li>
+<li><code>const_physical_memory_iterator pmbegin() const</code></li>
+<li><code>const_physical_memory_iterator cpmbegin() const</code></li>
+<li><code>physical_memory_iterator pmend()</code></li>
+<li><code>const_physical_memory_iterator pmend() const</code></li>
+<li><p><code>const_physical_memory_iterator cpmend() const</code></p>
+
+<p>  <strong>physical_memory_iterator</strong> の取得メソッドs。<strong>begin</strong> は実メモリ上の先頭要素を指し、<strong>end</strong> は末尾の次の場所を指す。<br/>
+  イテレータは、 forward iterator なので前進のみ可能。</p></li>
+</ul>
+
+
+<hr />
+
+<h3>How To Use ?</h3>
+
+<p><strong>基本</strong></p>
+
+<pre><code>    dlib::ring_buffer&lt;int&gt; buffer2();                 // &lt;- default, count() and capacity() is 0
+    dlib::ring_buffer&lt;int&gt; buffer(8);                 // &lt;- size() is 0, capacity() is 8
+    dlib::ring_buffer&lt;int&gt; buffer3(buffer);           // &lt;- copy constructor  
+
+    buffer.push_front(10);                            // &lt;- append '10' to the front of the buffer
+    buffer.push_back(10);                             // &lt;- append '10' to the back of the buffer
+
+    int x = buffer.front();                           // &lt;- get the first element of the buffer
+    int y = buffer[0];                                // &lt;- this is same as 'buffer.front()'
+
+    buffer.pop_front();                               // &lt;- remove the first element of the buffer
+    buffer.pop_back();                                // &lt;- remove the last element of the buffer
+
+    buffer.expand(buffer.capacity() * 2);             // &lt;- count() is 0, capacity() is 16
+    buffer.shrink(4);                                 // &lt;- count() is 0, capacity() is 4
+
+    buffer.clear();                                   // &lt;- count() is 0, capacity() is 4
+    buffer.clean_up();                                // &lt;- count() is 0, capacity() is 0
+</code></pre>
+
+<p><strong>Iterators</strong></p>
+
+<pre><code>    // navigate through the front element of a buffer to the back element of that
+    for(auto itr = buffer.begin(); itr != buffer.end(); ++itr)
+    {
+        std::cout &lt;&lt; "data -&gt; " &lt;&lt; *itr &lt;&lt; '\n';
+    }
+
+    // the following codes is the same as above...
+    for(size_t i = 0; i &lt; buffer.count(); ++i)
+    {
+        std::cout &lt;&lt; "data -&gt; " &lt;&lt; buffer[i] &lt;&lt; '\n';
+    }
+</code></pre>
+
+<p>詳しくは<code>tutorial.cpp</code>を <strong>CHECK !!</strong></p>
+
+<p><br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br /></p>
+</body>
+</html>
