@@ -10,7 +10,6 @@ namespace toy_box {
 
 namespace ring_buffer_bits {
 
-static const size_t kDummyMemmorySize = 1;
 static const size_t kCapacityBase = 2;
 
 using index_t = size_t;
