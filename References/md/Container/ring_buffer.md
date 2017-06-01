@@ -25,6 +25,8 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 						+ iterators.h
 						+ misc.h
 						- tutorial.cpp
+						
+宣言ファイル、実装ファイル、イテレータの宣言＆実装ファイル、全体で使用するパラメータの定義ファイルに分かれている。
 
 ### Namespace
 
@@ -46,7 +48,8 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 			}
 		}
 
-イテレータは別の名前空間に入っている（ファイルを分けるために）が、`ring_buffer`クラス内でエイリアスを定義してあるので、`ring_buffer<T>::iterator`で使用できる（というよりコッチを使って欲しい）。
+名前空間 **ring_buffer_bits** には ring_buffer クラスの構成部品が入っている。各種イテレータは ring_buffer クラスでエイリアスが作成されているので、そちらから利用すること(`toy_box::ring_buffer<T>::iterator`とか)。  
+**(const-)iterator** はコンテナの要素 (back -> front) を走査する。対して **(const-)physical-memory-iterator** は確保されている実メモリ上のデータを走査する。
 
 ### Public Methods
 
@@ -192,3 +195,5 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 		{
 			std::cout << "data -> " << buffer[i] << '\n';
 		}
+
+詳しくは`tutorial.cpp`を **CHECK !!**
