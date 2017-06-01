@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*_exe
 
 # Others
 .tags*
