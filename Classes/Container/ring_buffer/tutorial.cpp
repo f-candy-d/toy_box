@@ -91,7 +91,7 @@ int main(int argc, char const *argv[])
 	std::cout << "buffer[0] -> " << buff[0] << '\n';
 	std::cout << "buffer[1] -> " << buff[1] << '\n';
 	std::cout << "buffer[2] -> " << buff[2] << '\n';
-	std::cout << "buffer[3] -> " << buff[3] << '\n';
+	std::cout << "buffer[3] ('3' is an out-of-range index) -> " << buff[3] << '\n';
 
 	return 0;
 }
