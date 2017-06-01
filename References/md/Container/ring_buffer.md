@@ -1,6 +1,8 @@
 **class template**
 # toy_box::ring_buffer
 
+<div class="mxgraph" style="max-width:100%;" data-mxgraph="{&quot;highlight&quot;:&quot;#0000ff&quot;,&quot;lightbox&quot;:false,&quot;nav&quot;:true,&quot;edit&quot;:&quot;https://raw.githubusercontent.com/f-candy-d/diagrams_for_md/master/dlib/dlib_ring_buffer_fig_1.xml&quot;,&quot;url&quot;:&quot;https://raw.githubusercontent.com/f-candy-d/diagrams_for_md/master/dlib/dlib_ring_buffer_fig_1.xml&quot;}"></div>
+<script type="text/javascript" src="https://www.draw.io/embed2.js?s=basic&fetch=https%3A%2F%2Fraw.githubusercontent.com%2Ff-candy-d%2Fdiagrams_for_md%2Fmaster%2Fdlib%2Fdlib_ring_buffer_fig_1.xml"></script>
 
 ## Overview
 
