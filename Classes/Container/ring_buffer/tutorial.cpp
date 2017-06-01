@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
+#include <ctime>
 #include "ring_buffer.h"
 
 void log_buff(const toy_box::ring_buffer<int>& buff)
@@ -29,6 +30,13 @@ void log_buff(const toy_box::ring_buffer<int>& buff)
 int main(int argc, char const *argv[])
 {
 	std::cout << "\n[ toy_box::ring_buffer class tutorial ]\n" << '\n';
+	std::cout << " - unused memory is not initialized." << '\n';
+	std::cout << " - for passing a out-of-range index to operator[](), the behavior is not defined." << '\n';
+	std::cout << " - push_back()/push_front() will cause an assertion failure when capacity() is 0." << '\n';
+	std::cout << " - clear() does not free the memory, this method only call the destructor of its elements." << '\n';
+	std::cout << "   after calling this method, count() is 0, but capacity() is not changed." << '\n';
+	std::cout << " - clean_up() call clear() method inside, then free the memory." << '\n';
+	std::cout << "   after calling this method, count() & capacity() is 0." << "\n\n";
 
 	std::cout << "constructor(4)" << '\n';
 	toy_box::ring_buffer<int> buff(4);
