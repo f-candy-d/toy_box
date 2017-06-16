@@ -338,7 +338,8 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 <li><code>const_iterator end() const</code></li>
 <li><p><code>const_iterator cend() const</code></p>
 
-<p>  イテレータの取得メソッドs。<strong>begin</strong>はfrontを指し、<strong>end</strong>はbackの次を指す。イテレータは、forward iterator なので前進のみ可能。</p></li>
+<p>  イテレータの取得メソッドs。<br/>
+  <strong>begin</strong>はfrontを指し、<strong>end</strong>はbackの次を指す。イテレータは、forward iterator なので前進のみ可能。<strong>capacity</strong> が0の場合、<strong>begin</strong> は <strong>end</strong> を指す。</p></li>
 </ul>
 
 
@@ -352,8 +353,8 @@ indexの正規化をビット演算で行うために最大容量は必ず2の�
 <li><code>const_physical_memory_iterator pmend() const</code></li>
 <li><p><code>const_physical_memory_iterator cpmend() const</code></p>
 
-<p>  <strong>physical_memory_iterator</strong> の取得メソッドs。<strong>begin</strong> は実メモリ上の先頭要素を指し、<strong>end</strong> は末尾の次の場所を指す。<br/>
-  イテレータは、 forward iterator なので前進のみ可能。</p></li>
+<p>  <strong>physical_memory_iterator</strong> の取得メソッドs。<br/>
+  <strong>pmbegin</strong> は実メモリ上の先頭要素を指し、<strong>pmend</strong> は末尾の次の場所を指す。<strong>capacity</strong> が0の場合、<strong>pmbegin</strong> は <strong>pmend</strong> を指す。イテレータは、 forward iterator なので前進のみ可能。</p></li>
 </ul>
 
 
